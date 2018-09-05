@@ -1,9 +1,9 @@
-package com.k2.JavaAssembly.sample.sampleWidget;
+package com.k2.WidgetAssembly.sample.sampleWidget;
 
 import java.util.List;
 
-import com.k2.JavaAssembly.sample.widgetA.WidgetAInterface;
-import com.k2.JavaAssembly.sample.widgetB.WidgetBInterface;
+import com.k2.WidgetAssembly.sample.widgetA.WidgetAInterface;
+import com.k2.WidgetAssembly.sample.widgetB.WidgetBInterface;
 
 public interface SampleWidgetInterface {
 

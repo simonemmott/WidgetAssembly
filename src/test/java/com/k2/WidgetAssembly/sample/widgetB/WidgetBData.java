@@ -1,4 +1,4 @@
-package com.k2.JavaAssembly.sample.widgetB;
+package com.k2.WidgetAssembly.sample.widgetB;
 
 public class WidgetBData implements WidgetBInterface {
 

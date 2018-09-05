@@ -1,4 +1,4 @@
-package com.k2.JavaAssembly;
+package com.k2.WidgetAssembly;
 
 import static org.junit.Assert.*;
 
@@ -14,15 +14,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.k2.JavaAssembly.sample.sampleWidget.SampleWidget;
-import com.k2.JavaAssembly.sample.sampleWidget.SampleWidgetData;
-import com.k2.JavaAssembly.sample.sampleWidget.SampleWidgetInterface;
-import com.k2.JavaAssembly.sample.widgetA.WidgetA;
-import com.k2.JavaAssembly.sample.widgetA.WidgetAData;
-import com.k2.JavaAssembly.sample.widgetA.WidgetAInterface;
-import com.k2.JavaAssembly.sample.widgetB.WidgetB;
-import com.k2.JavaAssembly.sample.widgetB.WidgetBData;
-import com.k2.JavaAssembly.sample.widgetB.WidgetBInterface;
+import com.k2.WidgetAssembly.AWidget;
+import com.k2.WidgetAssembly.WidgetAssembly;
+import com.k2.WidgetAssembly.sample.sampleWidget.SampleWidget;
+import com.k2.WidgetAssembly.sample.sampleWidget.SampleWidgetData;
+import com.k2.WidgetAssembly.sample.sampleWidget.SampleWidgetInterface;
+import com.k2.WidgetAssembly.sample.widgetA.WidgetA;
+import com.k2.WidgetAssembly.sample.widgetA.WidgetAData;
+import com.k2.WidgetAssembly.sample.widgetA.WidgetAInterface;
+import com.k2.WidgetAssembly.sample.widgetB.WidgetB;
+import com.k2.WidgetAssembly.sample.widgetB.WidgetBData;
+import com.k2.WidgetAssembly.sample.widgetB.WidgetBInterface;
 
 
 

@@ -1,4 +1,4 @@
-package com.k2.JavaAssembly;
+package com.k2.WidgetAssembly;
 
 import java.io.IOException;
 import java.io.Writer;

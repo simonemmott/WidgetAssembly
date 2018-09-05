@@ -1,4 +1,4 @@
-package com.k2.JavaAssembly.sample.widgetA;
+package com.k2.WidgetAssembly.sample.widgetA;
 
 public interface WidgetAInterface {
 

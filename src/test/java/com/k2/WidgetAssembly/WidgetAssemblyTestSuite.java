@@ -1,4 +1,4 @@
-package com.k2.JavaAssembly;
+package com.k2.WidgetAssembly;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

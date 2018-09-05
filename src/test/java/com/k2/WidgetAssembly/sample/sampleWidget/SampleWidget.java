@@ -1,11 +1,11 @@
-package com.k2.JavaAssembly.sample.sampleWidget;
+package com.k2.WidgetAssembly.sample.sampleWidget;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-import com.k2.JavaAssembly.AWidget;
-import com.k2.JavaAssembly.WidgetAssembly;
+import com.k2.WidgetAssembly.AWidget;
+import com.k2.WidgetAssembly.WidgetAssembly;
 
 public class SampleWidget extends AWidget<SampleWidgetInterface> {
 
