@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.k2.Util.ObjectUtil;
+import com.k2.Util.StringUtil;
 import com.k2.Util.classes.ClassUtil;
 import com.k2.Util.classes.Getter;
 
@@ -121,8 +122,17 @@ public class WidgetAssemblyNode<S,T> {
 		return (containedWidgets == null)? new ArrayList<WidgetAssemblyNode>(0): containedWidgets;
 	}
 	
+	public List<WidgetAssemblyNode> getContainedNodes() {
+		List<WidgetAssemblyNode> list = new ArrayList<WidgetAssemblyNode>();
+		if (containers == null)
+			return list;
+		for (List<WidgetAssemblyNode> nodes : containers.values()) 
+			list.addAll(nodes);
+		return list;
+	}
+
 	@SuppressWarnings("unchecked")
-	protected void writeContainer(String containerAlias, T data, Writer out) throws IOException {
+	public void writeContainer(String containerAlias, T data, Writer out) throws IOException {
 		for (WidgetAssemblyNode an : getContainedNodes(containerAlias)) {
 			if (an.bindsCollection()) {
 				for (Object obj : an.getBoundCollection(data))
@@ -132,6 +142,14 @@ public class WidgetAssemblyNode<S,T> {
 			}
 		}
 		
+	}
+	
+	public void indent() {
+		assembly.indent();
+	}
+	
+	public void outdent() {
+		assembly.outdent();
 	}
 
 	public void indentContainer(String containerAlias, T data, Writer out) throws IOException {
@@ -152,8 +170,21 @@ public class WidgetAssemblyNode<S,T> {
 
 	public void println(Writer w, String line) throws IOException {
 		assembly.println(w, line);
-		
 	}
+
+	public void println(Writer w, String input, Object ... replacements) throws IOException {
+		assembly.println(w, StringUtil.replaceAll(input, "{}", replacements));
+	}
+
+	public void println(Writer w) throws IOException {
+		assembly.println(w);
+	}
+
+
+	public WidgetAssembly getAssembly() {
+		return assembly;
+	}
+
 
 
 

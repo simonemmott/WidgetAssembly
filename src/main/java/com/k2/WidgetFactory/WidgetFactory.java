@@ -12,10 +12,15 @@ public class WidgetFactory {
 	public static WidgetFactory create() {
 		return new WidgetFactory();
 	}
-	
-	private WidgetFactory() {}
+
+	public static WidgetFactory create(String ... packageNames) {
+		return new WidgetFactory(packageNames);
+	}
+
+
+	protected WidgetFactory() {}
 	@SuppressWarnings("unchecked")
-	private WidgetFactory(String ... packageNames) {
+	protected WidgetFactory(String ... packageNames) {
 		for (String packageName : packageNames) {
 			register((Class<? extends AWidget<?>>[]) ClassUtil.getClasses(packageName, Widget.class));
 		}
@@ -58,10 +63,6 @@ public class WidgetFactory {
 				register(widgetClass, ann.value());
 			} else 
 				throw new WidgetFactoryError("The widget {} is not annotated with '@Widget(\"alias\")'", widgetClass.getName());
-	}
-
-	public static WidgetFactory create(String ... packageNames) {
-		return new WidgetFactory(packageNames);
 	}
 
 }

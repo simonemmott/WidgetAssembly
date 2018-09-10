@@ -3,6 +3,8 @@ package com.k2.WidgetAssembly;
 import java.io.IOException;
 import java.io.Writer;
 
+import com.k2.Util.StringUtil;
+
 
 public class WidgetAssembly<T> {
 	
@@ -11,7 +13,7 @@ public class WidgetAssembly<T> {
 	}
 
 	private WidgetAssemblyNode<T,T> rootNode;
-	private WidgetAssembly(AWidget<T> widget) {
+	protected WidgetAssembly(AWidget<T> widget) {
 		this.rootNode = (WidgetAssemblyNode<T, T>) WidgetAssemblyNode.rootNode(this, widget.getWidgetInterface(), widget);
 	}
 
@@ -53,10 +55,20 @@ public class WidgetAssembly<T> {
 		indent = indent.substring(0, indent.length()-indentStr.length());
 	}
 	
+	public void println(Writer w, String input, Object ... replacements) throws IOException {
+		println(w, StringUtil.replaceAll(input, "{}", replacements));
+	}
+
 	public void println(Writer w, String line) throws IOException {
 		
 		w.write(indent);
 		w.write(line);
+		w.write(System.lineSeparator());
+		
+	}
+
+	public void println(Writer w) throws IOException {
+		
 		w.write(System.lineSeparator());
 		
 	}
