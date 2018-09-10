@@ -8,6 +8,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	ContainedWidgetTests.class,
 	WidgetAssemblyTests.class,
+	WidgetFactoryTests.class,
 	WidgetTests.class
 })
 public class WidgetAssemblyTestSuite {

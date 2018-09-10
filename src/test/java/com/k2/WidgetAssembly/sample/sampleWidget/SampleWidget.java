@@ -7,14 +7,16 @@ import java.io.Writer;
 import com.k2.WidgetAssembly.AWidget;
 import com.k2.WidgetAssembly.WidgetAssembly;
 import com.k2.WidgetAssembly.WidgetAssemblyNode;
+import com.k2.WidgetFactory.annotation.Widget;
 
+@Widget("sample")
 public class SampleWidget extends AWidget<SampleWidgetInterface> {
 
 	public static SampleWidget create() {
 		return new SampleWidget();
 	}
 	
-	private SampleWidget() {
+	public SampleWidget() {
 		super(SampleWidgetInterface.class);
 	}
 

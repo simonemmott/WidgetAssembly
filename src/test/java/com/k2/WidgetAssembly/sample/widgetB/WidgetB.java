@@ -8,14 +8,16 @@ import com.k2.WidgetAssembly.AWidget;
 import com.k2.WidgetAssembly.WidgetAssembly;
 import com.k2.WidgetAssembly.WidgetAssemblyNode;
 import com.k2.WidgetAssembly.sample.sampleWidget.SampleWidgetInterface;
+import com.k2.WidgetFactory.annotation.Widget;
 
+@Widget("sample")
 public class WidgetB extends AWidget<WidgetBInterface> {
 
 	public static WidgetB create() {
 		return new WidgetB();
 	}
 	
-	private WidgetB() {
+	public WidgetB() {
 		super(WidgetBInterface.class);
 	}
 
