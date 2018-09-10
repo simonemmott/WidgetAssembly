@@ -6,6 +6,7 @@ import java.io.Writer;
 
 import com.k2.WidgetAssembly.AWidget;
 import com.k2.WidgetAssembly.WidgetAssembly;
+import com.k2.WidgetAssembly.WidgetAssemblyNode;
 import com.k2.WidgetAssembly.sample.sampleWidget.SampleWidgetInterface;
 
 public class WidgetA extends AWidget<WidgetAInterface> {
@@ -19,10 +20,10 @@ public class WidgetA extends AWidget<WidgetAInterface> {
 	}
 
 	@Override
-	public Writer output(WidgetAssembly<?> wa, WidgetAInterface data, Writer out) throws IOException {
-		wa.println(out, "WIDGET A");
+	public Writer output(WidgetAssemblyNode<?,WidgetAInterface> node, WidgetAInterface data, Writer out) throws IOException {
+		node.println(out, "WIDGET A");
 		if (data != null)
-			wa.println(out, data.getAlias()+"["+data.getId()+"]");
+			node.println(out, data.getAlias()+"["+data.getId()+"]");
 		
 		return out;
 	}

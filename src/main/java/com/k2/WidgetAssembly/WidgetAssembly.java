@@ -10,17 +10,17 @@ public class WidgetAssembly<T> {
 		return new WidgetAssembly<K>(widget);
 	}
 
-	private AWidget<T> rootWidget;
+	private WidgetAssemblyNode<T,T> rootNode;
 	private WidgetAssembly(AWidget<T> widget) {
-		this.rootWidget = widget;
+		this.rootNode = (WidgetAssemblyNode<T, T>) WidgetAssemblyNode.rootNode(this, widget.getWidgetInterface(), widget);
 	}
 
-	public AWidget<T> root() {
-		return rootWidget;
+	public WidgetAssemblyNode<T,T> root() {
+		return rootNode;
 	}
 
 	public Writer output(T obj, Writer out) throws IOException {
-		return rootWidget.output(this, obj, out);
+		return rootNode.output(obj, out);
 	}
 
 	private String indentStr = "    ";

@@ -44,7 +44,7 @@ public class WidgetAssemblyTests {
 	@Test
 	public void extractRootWigetTest() {
 		WidgetAssembly<SampleWidgetInterface> wa = WidgetAssembly.create(SampleWidget.create());
-		AWidget<SampleWidgetInterface> w = wa.root();
+		AWidget<SampleWidgetInterface> w = wa.root().getWidget();
 		assertNotNull(w);
 	}
 	
@@ -99,14 +99,13 @@ public class WidgetAssemblyTests {
 		WidgetA wa = WidgetA.create();
 		WidgetB wb = WidgetB.create();
 		
-		AWidget<SampleWidgetInterface> root = SampleWidget.create()
-				.bind("A", wa, "widgetA")
-				.bind("A", wb, "widgetB")
-				.bind("B", wa, "widgetAs")
-				.bind("B", wb, "widgetBs");
+		WidgetAssembly<SampleWidgetInterface> a = WidgetAssembly.create(SampleWidget.create());
+		a.root()
+				.bind("A", wa, "widgetA").up()
+				.bind("A", wb, "widgetB").up()
+				.bind("B", wa, "widgetAs").up()
+				.bind("B", wb, "widgetBs").up();
 		
-		WidgetAssembly<SampleWidgetInterface> a = WidgetAssembly.create(root);
-
 		SampleWidgetInterface swi = new SampleWidgetData("Sample", "Widget");
 		swi.setWidgetA(new WidgetAData("widgetA", 1L));
 		swi.setWidgetB(new WidgetBData("widgetB", 1L));

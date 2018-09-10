@@ -31,30 +31,32 @@ public class WidgetTests {
 		
 		WidgetA wa = WidgetA.create();
 		WidgetB wb = WidgetB.create();
+		SampleWidget sw = SampleWidget.create();
 		
-		AWidget<SampleWidgetInterface> root = SampleWidget.create()
-				.bind("A", wa, "widgetA")
-				.bind("A", wb, "widgetB")
-				.bind("B", wa, "widgetAs")
-				.bind("B", wb, "widgetBs");
+		WidgetAssembly<SampleWidgetInterface> assembly = WidgetAssembly.create(sw);
+		assembly.root()
+				.bind("A", wa, "widgetA").up()
+				.bind("A", wb, "widgetB").up()
+				.bind("B", wa, "widgetAs").up()
+				.bind("B", wb, "widgetBs").up();
 		
 		
-		assertEquals(2, root.getContainedWidgets("A").size());
-		assertEquals(2, root.getContainedWidgets("B").size());
+		assertEquals(2, assembly.root().getContainedNodes("A").size());
+		assertEquals(2, assembly.root().getContainedNodes("B").size());
 		
-		assertEquals("A", root.getContainedWidgets("A").get(0).getContainerAlias());
-		assertEquals("A", root.getContainedWidgets("A").get(1).getContainerAlias());
-		assertEquals(wa, root.getContainedWidgets("A").get(0).getWidget());
-		assertEquals(wb, root.getContainedWidgets("A").get(1).getWidget());
-		assertEquals("widgetA", root.getContainedWidgets("A").get(0).getFieldAlias());
-		assertEquals("widgetB", root.getContainedWidgets("A").get(1).getFieldAlias());
+		assertEquals("A", assembly.root().getContainedNodes("A").get(0).getContainerAlias());
+		assertEquals("A", assembly.root().getContainedNodes("A").get(1).getContainerAlias());
+		assertEquals(wa, assembly.root().getContainedNodes("A").get(0).getWidget());
+		assertEquals(wb, assembly.root().getContainedNodes("A").get(1).getWidget());
+		assertEquals("widgetA", assembly.root().getContainedNodes("A").get(0).getFieldAlias());
+		assertEquals("widgetB", assembly.root().getContainedNodes("A").get(1).getFieldAlias());
 		
-		assertEquals("B", root.getContainedWidgets("B").get(0).getContainerAlias());
-		assertEquals("B", root.getContainedWidgets("B").get(1).getContainerAlias());
-		assertEquals(wa, root.getContainedWidgets("B").get(0).getWidget());
-		assertEquals(wb, root.getContainedWidgets("B").get(1).getWidget());
-		assertEquals("widgetAs", root.getContainedWidgets("B").get(0).getFieldAlias());
-		assertEquals("widgetBs", root.getContainedWidgets("B").get(1).getFieldAlias());
+		assertEquals("B", assembly.root().getContainedNodes("B").get(0).getContainerAlias());
+		assertEquals("B", assembly.root().getContainedNodes("B").get(1).getContainerAlias());
+		assertEquals(wa, assembly.root().getContainedNodes("B").get(0).getWidget());
+		assertEquals(wb, assembly.root().getContainedNodes("B").get(1).getWidget());
+		assertEquals("widgetAs", assembly.root().getContainedNodes("B").get(0).getFieldAlias());
+		assertEquals("widgetBs", assembly.root().getContainedNodes("B").get(1).getFieldAlias());
 		
 		
 	}

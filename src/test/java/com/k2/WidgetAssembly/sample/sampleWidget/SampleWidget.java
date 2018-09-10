@@ -6,6 +6,7 @@ import java.io.Writer;
 
 import com.k2.WidgetAssembly.AWidget;
 import com.k2.WidgetAssembly.WidgetAssembly;
+import com.k2.WidgetAssembly.WidgetAssemblyNode;
 
 public class SampleWidget extends AWidget<SampleWidgetInterface> {
 
@@ -18,16 +19,16 @@ public class SampleWidget extends AWidget<SampleWidgetInterface> {
 	}
 
 	@Override
-	public Writer output(WidgetAssembly<?> wa, SampleWidgetInterface data, Writer out) throws IOException {
+	public Writer output(WidgetAssemblyNode<?,SampleWidgetInterface> node, SampleWidgetInterface data, Writer out) throws IOException {
 
-		wa.println(out, "SAMPLE WIDGET");
-		wa.println(out, data.getName()+"("+data.getDescription()+")");
-		wa.println(out, "Container A [");
-		indentContainer("A", wa, data, out);
-		wa.println(out, "]");
-		wa.println(out, "Container B [");
-		indentContainer("B", wa, data, out);
-		wa.println(out, "]");
+		node.println(out, "SAMPLE WIDGET");
+		node.println(out, data.getName()+"("+data.getDescription()+")");
+		node.println(out, "Container A [");
+		node.indentContainer("A", data, out);
+		node.println(out, "]");
+		node.println(out, "Container B [");
+		node.indentContainer("B", data, out);
+		node.println(out, "]");
 		
 		return out;
 	}

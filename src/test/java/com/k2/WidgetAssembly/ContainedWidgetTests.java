@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.k2.WidgetAssembly.AWidget;
-import com.k2.WidgetAssembly.ContainedWidget;
+import com.k2.WidgetAssembly.WidgetAssemblyNode;
 import com.k2.WidgetAssembly.sample.sampleWidget.SampleWidget;
 import com.k2.WidgetAssembly.sample.sampleWidget.SampleWidgetData;
 import com.k2.WidgetAssembly.sample.sampleWidget.SampleWidgetInterface;
@@ -32,13 +32,13 @@ public class ContainedWidgetTests {
 		
 		AWidget<SampleWidgetInterface> w = SampleWidget.create();
 		
-		ContainedWidget cw = ContainedWidget.create(Object.class, "Container", w, "alias");
+		WidgetAssemblyNode cw = WidgetAssemblyNode.rootNode(null, Object.class, w);
 		
 		assertNotNull(cw);
 		
-		assertEquals("Container", cw.getContainerAlias());
+		assertNull(cw.getContainerAlias());
 		assertEquals(w, cw.getWidget());
-		assertEquals("alias", cw.getFieldAlias());
+		assertEquals("", cw.getFieldAlias());
 		
 		
 	}
