@@ -2,6 +2,7 @@ package com.k2.WidgetAssembly;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,19 +10,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.k2.Util.ObjectUtil;
 import com.k2.Util.StringUtil;
 import com.k2.Util.classes.ClassUtil;
 import com.k2.Util.classes.Getter;
 
 public class WidgetAssemblyNode<S,T> {
+	
+	   static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 
 //	public static <S,T> WidgetAssemblyNode<S,T> create(Class<S> sourceType, String containerAlias, AWidget<T> widget, String fieldAlias) {
 //		return new WidgetAssemblyNode<S,T>(sourceType, containerAlias, widget, fieldAlias);
 //	}
 
 	@SuppressWarnings("unchecked")
-	public static <S,T> WidgetAssemblyNode<?, T> rootNode(WidgetAssembly assembly, Class<S> sourceType, AWidget<T> widget) {
+	public static <T> WidgetAssemblyNode<T, T> rootNode(WidgetAssembly assembly, Class<T> sourceType, AWidget<T> widget) {
 		return new WidgetAssemblyNode(assembly, sourceType, widget);
 	}
 	
@@ -51,12 +58,26 @@ public class WidgetAssemblyNode<S,T> {
 		this.parentNode = parentNode;
 	}
 	
+	private WidgetAssemblyNode(WidgetAssembly assembly, WidgetAssemblyNode parentNode, WidgetAssemblyNode<?,T> sourceNode, String containerAlias) {
+		this.assembly = assembly;
+		this.containerAlias = containerAlias;
+		this.widget = null;
+		this.fieldAlias = null;
+		this.sourceType = (Class<S>) sourceNode.getSourceType();
+		this.sourceNode = sourceNode;
+		this.bindsCollection = false;
+		this.collectionGetter = null;
+		this.getter = null;
+		this.parentNode = parentNode;
+	}
+	
 	private final WidgetAssembly assembly;
 	private final WidgetAssemblyNode<?,S> parentNode;
 
 	private Getter<S,T> getter;
 	private Getter<S,Collection> collectionGetter;
 	
+	private WidgetAssemblyNode<?,T> sourceNode;
 	private Class<S> sourceType;
 	public Class<S> getSourceType() {
 		return sourceType;
@@ -76,10 +97,13 @@ public class WidgetAssemblyNode<S,T> {
 		return fieldAlias;
 	}
 
-	public T getBoundData(S source) {
+	public T getBoundData(Object source) {
 		if (getter==null)
 			return null;
-		return getter.get(source);
+		if (sourceNode == null)
+			return getter.get((S) source);
+		else
+			return sourceNode.getBoundData(source);
 	}
 	private boolean bindsCollection;
 	public boolean bindsCollection() {
@@ -96,17 +120,27 @@ public class WidgetAssemblyNode<S,T> {
 	}
 
 	private Map<String, List<WidgetAssemblyNode>> containers;
-
-	public WidgetAssemblyNode<?,T> bind(String containerAlias, AWidget<?> widget, String fieldAlias) {
+	
+	private List<WidgetAssemblyNode> getContainedWidgets(String containerAlias) {
 		if (containers == null) containers = new HashMap<String, List<WidgetAssemblyNode>>();
 		List<WidgetAssemblyNode> containedWidgets = containers.get(containerAlias);
 		if (containedWidgets == null) {
 			containedWidgets = new ArrayList<WidgetAssemblyNode>();
 			containers.put(containerAlias, containedWidgets);
 		}
-		
+		return containedWidgets;
+	}
+
+	public WidgetAssemblyNode<?,T> bind(String containerAlias, AWidget<?> widget, String fieldAlias) {
 		WidgetAssemblyNode<?,T> node = new WidgetAssemblyNode(assembly, this, this.getWidget().getWidgetInterface(), containerAlias, widget, fieldAlias);
-		containedWidgets.add(node);
+		getContainedWidgets(containerAlias).add(node);
+		return node;
+	}
+
+
+	public WidgetAssemblyNode<?, T> contain(String inContainerAlias, WidgetAssemblyNode<?,?> sourceNode, String containerAlias) {
+		WidgetAssemblyNode<?,T> node = new WidgetAssemblyNode(assembly, this, sourceNode, containerAlias);
+		getContainedWidgets(inContainerAlias).add(node);
 		return node;
 	}
 
@@ -130,15 +164,23 @@ public class WidgetAssemblyNode<S,T> {
 			list.addAll(nodes);
 		return list;
 	}
+	
+	public boolean isTemplateContainer() {
+		return (sourceNode!=null);
+	}
 
 	@SuppressWarnings("unchecked")
 	public void writeContainer(String containerAlias, T data, Writer out) throws IOException {
 		for (WidgetAssemblyNode an : getContainedNodes(containerAlias)) {
-			if (an.bindsCollection()) {
-				for (Object obj : an.getBoundCollection(data))
-					an.output(obj, out);
+			if (an.isTemplateContainer()) {
+				an.sourceNode.writeContainer(an.containerAlias, data, out);
 			} else {
-				an.output(an.getBoundData(data), out);
+				if (an.bindsCollection()) {
+					for (Object obj : an.getBoundCollection(data))
+						an.output(obj, out);
+				} else {
+					an.output(an.getBoundData(data), out);
+				}
 			}
 		}
 		
@@ -164,7 +206,15 @@ public class WidgetAssemblyNode<S,T> {
 
 
 	public Writer output(T obj, Writer out) throws IOException {
-		return widget.output(this, obj, out);
+		if (sourceNode != null) {
+			logger.debug((obj==null)?"NULL":obj.toString());
+			if (obj != null)
+				sourceNode.writeContainer(this.containerAlias, obj, out);
+
+			return out;
+		} else {
+			return widget.output(this, obj, out);
+		}
 	}
 
 

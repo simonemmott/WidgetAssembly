@@ -32,7 +32,7 @@ public class ContainedWidgetTests {
 		
 		AWidget<SampleWidgetInterface> w = SampleWidget.create();
 		
-		WidgetAssemblyNode cw = WidgetAssemblyNode.rootNode(null, Object.class, w);
+		WidgetAssemblyNode cw = WidgetAssemblyNode.rootNode(null, SampleWidgetInterface.class, w);
 		
 		assertNotNull(cw);
 		
