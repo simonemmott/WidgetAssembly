@@ -13,7 +13,7 @@ public abstract class AWidget<T> {
 		this.widgetInterface = widgetInterface;
 	}
 
-	public abstract Writer output(WidgetAssemblyNode<?,T> node, T obj, Writer out) throws IOException;
+	public abstract Writer output(WidgetAssemblyNode<?,T> node, T obj, Writer out, boolean isFirst, boolean isLast) throws IOException;
 	
 	private Class<T> widgetInterface;
 	public Class<T> getWidgetInterface() {

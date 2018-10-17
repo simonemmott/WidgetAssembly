@@ -22,7 +22,7 @@ public class WidgetAssembly<T> {
 	}
 
 	public Writer output(T obj, Writer out) throws IOException {
-		return rootNode.output(obj, out);
+		return rootNode.output(obj, out, true, true);
 	}
 
 	private String indentStr = "    ";

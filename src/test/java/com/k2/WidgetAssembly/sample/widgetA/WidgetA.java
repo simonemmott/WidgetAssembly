@@ -22,7 +22,7 @@ public class WidgetA extends AWidget<WidgetAInterface> {
 	}
 
 	@Override
-	public Writer output(WidgetAssemblyNode<?,WidgetAInterface> node, WidgetAInterface data, Writer out) throws IOException {
+	public Writer output(WidgetAssemblyNode<?,WidgetAInterface> node, WidgetAInterface data, Writer out, boolean isFirst, boolean isLast) throws IOException {
 		node.println(out, "WIDGET A");
 		if (data != null)
 			node.println(out, data.getAlias()+"["+data.getId()+"]");

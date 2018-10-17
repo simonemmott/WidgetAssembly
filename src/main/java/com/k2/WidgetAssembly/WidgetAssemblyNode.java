@@ -7,6 +7,7 @@ import java.lang.invoke.MethodHandles.Lookup;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -171,15 +172,29 @@ public class WidgetAssemblyNode<S,T> {
 
 	@SuppressWarnings("unchecked")
 	public void writeContainer(String containerAlias, T data, Writer out) throws IOException {
-		for (WidgetAssemblyNode an : getContainedNodes(containerAlias)) {
+		
+		boolean first = true;
+		boolean last = false;
+		for (Iterator<WidgetAssemblyNode> i = getContainedNodes(containerAlias).iterator(); i.hasNext(); ) {
+			WidgetAssemblyNode an = i.next();
+//		}
+//		for (WidgetAssemblyNode an : getContainedNodes(containerAlias)) {
 			if (an.isTemplateContainer()) {
 				an.sourceNode.writeContainer(an.containerAlias, data, out);
 			} else {
 				if (an.bindsCollection()) {
-					for (Object obj : an.getBoundCollection(data))
-						an.output(obj, out);
+					for (Iterator<Object> oi = an.getBoundCollection(data).iterator(); oi.hasNext(); ) {
+						Object obj = oi.next();
+//					}
+//					for (Object obj : an.getBoundCollection(data)) {
+						last = !i.hasNext() && !oi.hasNext();
+						an.output(obj, out, first, last);
+						first = false;
+					}
 				} else {
-					an.output(an.getBoundData(data), out);
+					last = !i.hasNext();
+					an.output(an.getBoundData(data), out, first, last);
+					first = false;
 				}
 			}
 		}
@@ -205,7 +220,7 @@ public class WidgetAssemblyNode<S,T> {
 	}
 
 
-	public Writer output(T obj, Writer out) throws IOException {
+	public Writer output(T obj, Writer out, boolean isFirst, boolean isLast) throws IOException {
 		if (sourceNode != null) {
 			logger.debug((obj==null)?"NULL":obj.toString());
 			if (obj != null)
@@ -213,7 +228,7 @@ public class WidgetAssemblyNode<S,T> {
 
 			return out;
 		} else {
-			return widget.output(this, obj, out);
+			return widget.output(this, obj, out, isFirst, isLast);
 		}
 	}
 

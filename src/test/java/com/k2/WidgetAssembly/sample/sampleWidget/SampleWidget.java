@@ -21,7 +21,7 @@ public class SampleWidget extends AWidget<SampleWidgetInterface> {
 	}
 
 	@Override
-	public Writer output(WidgetAssemblyNode<?,SampleWidgetInterface> node, SampleWidgetInterface data, Writer out) throws IOException {
+	public Writer output(WidgetAssemblyNode<?,SampleWidgetInterface> node, SampleWidgetInterface data, Writer out, boolean isFirst, boolean isLast) throws IOException {
 
 		node.println(out, "SAMPLE WIDGET");
 		node.println(out, data.getName()+"("+data.getDescription()+")");

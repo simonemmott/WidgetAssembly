@@ -1,5 +1,8 @@
 package com.k2.WidgetAssembly.sample.sampleWidget;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import com.k2.WidgetAssembly.ATemplate;
 import com.k2.WidgetAssembly.WidgetAssembly;
 import com.k2.WidgetAssembly.WidgetAssemblyNode;
